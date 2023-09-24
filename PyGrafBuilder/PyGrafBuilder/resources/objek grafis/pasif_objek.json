@@ -1,0 +1,142 @@
+[
+    {
+        "name": "kotak",
+        "type": "rectangle",
+        "x": 500,
+        "y": 200,
+        "width": 200,
+        "height": 200,
+        "animation_type": "pasif",
+        "point": [
+            [
+                500,
+                200
+            ],
+            [
+                700,
+                200
+            ],
+            [
+                700,
+                400
+            ],
+            [
+                500,
+                400
+            ]
+        ],
+        "color": [
+            255,
+            255,
+            255
+        ]
+    },
+    {
+        "name": "default",
+        "type": "line",
+        "x1": 0,
+        "y1": 0,
+        "x2": 500,
+        "y2": 200,
+        "point": [
+            [
+                0,
+                0
+            ],
+            [
+                500,
+                200
+            ]
+        ],
+        "animation_type": "pasif",
+        "n_point": [],
+        "length_line": 0,
+        "degree": 0,
+        "color": [
+            255,
+            255,
+            255
+        ]
+    },
+    {
+        "name": "default",
+        "type": "line",
+        "x1": 1280,
+        "y1": 720,
+        "x2": 700,
+        "y2": 400,
+        "point": [
+            [
+                1280,
+                720
+            ],
+            [
+                700,
+                400
+            ]
+        ],
+        "animation_type": "pasif",
+        "n_point": [],
+        "length_line": 0,
+        "degree": 0,
+        "color": [
+            255,
+            255,
+            255
+        ]
+    },
+    {
+        "name": "default",
+        "type": "line",
+        "x1": 1280,
+        "y1": 0,
+        "x2": 700,
+        "y2": 200,
+        "point": [
+            [
+                1280,
+                0
+            ],
+            [
+                700,
+                200
+            ]
+        ],
+        "animation_type": "pasif",
+        "n_point": [],
+        "length_line": 0,
+        "degree": 0,
+        "color": [
+            255,
+            255,
+            255
+        ]
+    },
+    {
+        "name": "default",
+        "type": "line",
+        "x1": 0,
+        "y1": 720,
+        "x2": 500,
+        "y2": 400,
+        "point": [
+            [
+                0,
+                720
+            ],
+            [
+                500,
+                400
+            ]
+        ],
+        "animation_type": "pasif",
+        "n_point": [],
+        "length_line": 0,
+        "degree": 0,
+        "color": [
+            255,
+            255,
+            255
+        ]
+    }
+]
