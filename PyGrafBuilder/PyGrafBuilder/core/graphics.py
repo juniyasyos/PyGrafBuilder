@@ -4,6 +4,9 @@ from OpenGL.GLU import *
 import math
 from transformations import *
 
+putar = 0
+
+
 colors = {
         'Red': (255, 0, 0),
         'Green': (0, 255, 0),
@@ -40,6 +43,7 @@ class OpenGLInitializer:
         self.z_start=z_start
         self.z_end=z_end
         self.initialize_window()
+        self.putar = 10
 
     def initialize_window(self):
         """
@@ -52,7 +56,6 @@ class OpenGLInitializer:
         glutDisplayFunc(self.display)
         
         glutKeyboardFunc(self.keyboard)
-        glutIdleFunc(self.animation)
 
     def set_window_properties(self, size, title):
         """
@@ -91,6 +94,7 @@ class OpenGLInitializer:
         """
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.set_modelView()
+        # self.transform.rotate(30,600,300,name="rectangle")
         self.object_manager.draw_object()
         glutSwapBuffers()
 
@@ -101,9 +105,23 @@ class OpenGLInitializer:
                 print("Mode Layar Penuh Aktif")
             else:
                 print("Mode Layar Penuh Nonaktif")
-    def animation(self):
-        self.object_manager.set_objects(self.transform.apply_transf())
+        if key == b'a':
+            self.transform.translate(-100, 0, "rectangle")
+        if key == b'd':
+            self.transform.translate(100, 0, "rectangle")
+        if key == b's':
+            self.transform.translate(0, -100, "rectangle")
+        if key == b'w':
+            self.transform.translate(0, 100, "rectangle")
+        # if key == b'r':
+        #     for i in range(90):
+        #         self.transform.rotate(angle_degrees=i, name="rectangle", center_x=600, center_y=300)
+        #         self.display()
+        #         time.sleep(0.03)
+        #         print(i)
         glutPostRedisplay()
+
+
 
 # Object Management
 class ObjectManager:

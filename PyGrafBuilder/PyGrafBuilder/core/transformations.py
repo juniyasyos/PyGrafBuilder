@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class Transform:
     def __init__(self, Objects=[]):
@@ -53,7 +54,8 @@ class Transform:
                     new_point.append((self.Object[obj]['point'][i][0] * scale_factor,self.Object[obj]['point'][i][1] * scale_factor))
                 self.Object[obj]['point'] = new_point
 
-    def rotate(self, angle_degrees, name="default"):
+
+    def rotate(self, angle_degrees, center_x=0.0, center_y=0.0, name="default"):
         """
         Rotate an object or shape by a specified angle (in degrees) around a specified center point.
 
@@ -66,33 +68,28 @@ class Transform:
         Returns:
             None
         """
-        pointCenter = 0
         for obj in range(len(self.Object)):
             new_point = []
             if self.Object[obj]['name'] == name or self.Object[obj]['type'] == name:
                 angle_radians = np.radians(angle_degrees)
-                x_total = 0
-                y_total = 0
-                for x,y in range(len(self.Object[obj]['point'])):
-                    x_total += x                    
-                    y_total += y           
-                mid = (x_total/len(self.Object[obj]['point']),y_total/len(self.Object[obj]['point']))         
-                
+                for x, y in self.Object[obj]['point']:
+                    # Translasi titik ke pusat rotasi
+                    translated_x = x - center_x
+                    translated_y = y - center_y
+
+                    # Perhitungan rotasi
+                    rotated_x = translated_x * np.cos(angle_radians) - translated_y * np.sin(angle_radians)
+                    rotated_y = translated_x * np.sin(angle_radians) + translated_y * np.cos(angle_radians)
+
+                    # Kembalikan ke posisi semula
+                    final_x = rotated_x + center_x
+                    final_y = rotated_y + center_y
+
+                    new_point.append((final_x, final_y))
+
                 self.Object[obj]['point'] = new_point
-        pass
-                
-
-
-                
-    def apply_transf(self):
-        """
-        Returns the list of objects after applying transformations.
-
-        Args:
-            None
-
-        Returns:
-            list of dict: The list of objects after applying transformations.
-        """
-        return self.Object
     
+                
+
+
+
