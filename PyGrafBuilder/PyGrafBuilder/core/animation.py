@@ -17,6 +17,7 @@ class Transform:
 
 
     def scale(self, scale_factor,name="default"):
+        "Hello"
         for obj in range(len(self.Object)):
             new_point = []
             if self.Object[obj]['name'] in name or self.Object[obj]['type'] == name:
