@@ -27,28 +27,28 @@ class ObjectManager:
     """
     def __init__(self,objects=[]):
         self.objects = objects
-        self.setting_animation = SettingAnimation(self.objects)
+        # self.setting_animation = SettingAnimation(self.objects)
 
     def get_Objects(self):
-        def load_json(filename):
-            """ Membaca data dari file JSON. """
-            try:
-                with open(filename, "r") as file:
-                    data = json.load(file)
-                return data
-            except FileNotFoundError:
-                print(f"File {filename} tidak ditemukan.")
-                return []
-            except Exception as e:
-                print(f"Terjadi kesalahan saat membaca file {filename}: {str(e)}")
-                return []
-        file = ["D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/pasif_objek.json","D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/aktif_objek.json","D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/entahlah_objek.json"]
-        data = []
-        for i in file:
-            for j in load_json(i):
-                data.append(j)
-                
-        self.objects = data
+        # def load_json(filename):
+        #     """ Membaca data dari file JSON. """
+        #     try:
+        #         with open(filename, "r") as file:
+        #             data = json.load(file)
+        #         return data
+        #     except FileNotFoundError:
+        #         print(f"File {filename} tidak ditemukan.")
+        #         return []
+        #     except Exception as e:
+        #         print(f"Terjadi kesalahan saat membaca file {filename}: {str(e)}")
+        #         return []
+        # file = ["D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/pasif_objek.json","D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/aktif_objek.json","D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/entahlah_objek.json"]
+        # data = []
+        # for i in file:
+        #     for j in load_json(i):
+        #         data.append(j)
+
+        # self.objects = data
         return self.objects
 
     def remove_objects(self, name="None"):
@@ -329,48 +329,4 @@ class ObjectManager:
                 glVertex2f(*obj['point'][i])
                 glVertex2f(*obj['point'][i+1])
         glEnd()
-
-
-class SettingAnimation:
-    """ Kelas untuk mengatur animasi objek. """
-    
-    def __init__(self, objects):
-        self.objects = objects
-
-    def setAnimation(self, name: list or str, animation_type: str):
-        """ Mengatur tipe animasi objek berdasarkan nama objek. """
-        for obj in self.objects:
-            if obj['name'] in name:
-                obj["animation_type"] = animation_type
-    
-
-    def saveObjectGraf(self):
-        def saveFile(objects, filename):
-            """ Menyimpan objek ke dalam file JSON. """
-            try:
-                with open(filename, "a") as file:
-                    json.dump(objects, file, indent=4)
-
-                print(f"Objek berhasil disimpan ke dalam file: {filename}")
-            except Exception as e:
-                print(f"Terjadi kesalahan saat menyimpan objek: {str(e)}")
-        
-        pasif_obj = []
-        aktif_obj = []
-        tau_obj = []
-        for obj in self.objects:
-            if obj["animation_type"] == "pasif":
-                pasif_obj.append(obj)
-            elif obj["animation_type"] == "aktif":
-                aktif_obj.append(obj)
-            else:
-                tau_obj.append(obj)
-                
-        saveFile(pasif_obj,"D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/pasif_objek.json")
-        saveFile(aktif_obj,"D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/entahlah_objek.json")
-        saveFile(tau_obj,"D:/2023/Semester 3/Grafika Komputer/Tugas Akhir/PyGrafBuilder/PyGrafBuilder/resources/objek grafis/aktif_objek.json")
-
-
-
-
 

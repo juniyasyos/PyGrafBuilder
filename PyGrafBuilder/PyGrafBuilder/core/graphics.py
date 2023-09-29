@@ -2,7 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from ProjectManajer import *
-from transformations import *
+from animation import *
 
 # Initialization and Window Configuration
 class OpenGLInitializer:
@@ -22,7 +22,9 @@ class OpenGLInitializer:
         self.z_start=z_start
         self.z_end=z_end
         self.initialize_window()
-        self.putar = 10
+
+    def set_transformObject(self,obj):
+        self.transform = Transform(obj)
 
     def initialize_window(self):
         """
@@ -76,6 +78,7 @@ class OpenGLInitializer:
         self.object_manager.draw_object()
         glutSwapBuffers()
 
+
     def keyboard(self, key, x, y):
         if key == b'f':
             self.toggle_fullscreen()
@@ -83,17 +86,15 @@ class OpenGLInitializer:
                 print("Mode Layar Penuh Aktif")
             else:
                 print("Mode Layar Penuh Nonaktif")
-        if key == b'a':
-            self.transform.translate(-100, 0, ["tiga","kotak"])
-        if key == b'd':
-            self.transform.translate(100, 0, ["tiga","kotak"])
-        if key == b's':
-            self.transform.translate(0, -100, ["tiga","kotak"])
-        if key == b'w':
-            self.transform.translate(0, 100, ["tiga","kotak"])
-        if key == b'r':
-            for i in range(90):
-                self.transform.rotate(angle_degrees=i, name="tiga", center_x=600, center_y=300)
-                self.display()
-                time.sleep(0.03)
+        elif key == b'a':
+            self.transform.translate(-100, 0, "hah")
+        elif key == b'd':
+            self.transform.translate(100, 0, "hah")
+        elif key == b's':
+            self.transform.translate(0, -100, "hah")
+        elif key == b'w':
+            self.transform.translate(0, 100, "hah")
+
         glutPostRedisplay()
+
+
