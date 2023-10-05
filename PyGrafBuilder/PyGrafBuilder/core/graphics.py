@@ -1,83 +1,58 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
-from OpenGL.GLU import *
 from ProjectManajer import *
 from animation import *
 
-# Initialization and Window Configuration
 class OpenGLInitializer:
-    """
-    Initializes and configures the OpenGL window.
-    """
-    def __init__(self, window_size=(1280, 720), window_title="OpenGL Window",kiri=0,kanan=1280,atas=0,bawah=720,z_start=0.0,z_end=1.0):
+    def __init__(self, window_size=(1280, 720), window_title="OpenGL Window", kiri=-500.0,kanan=500,atas=500,bawah=-500,z_start=0.0,z_end=1.0):
         self.window_size = window_size
         self.window_title = window_title
         self.fullscreen = False
         self.object_manager = ObjectManager()
-        self.transform = Transform(self.object_manager.get_Objects())
-        self.kiri=kiri
-        self.kanan=kanan
-        self.atas=atas
-        self.bawah=bawah
-        self.z_start=z_start
-        self.z_end=z_end
+        self.transform = Transform(self.object_manager.get_objects())
+        self.kiri = kiri
+        self.kanan = kanan
+        self.atas = atas
+        self.bawah = bawah
+        self.z_start = z_start
+        self.z_end = z_end
         self.initialize_window()
 
-    def set_transformObject(self,obj):
+    def set_transformObject(self, obj):
         self.transform = Transform(obj)
 
     def initialize_window(self):
-        """
-        Initialize the OpenGL window using the appropriate library (e.g., GLUT).
-        """
         glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(*self.window_size)
         glutCreateWindow(self.window_title)
         glutDisplayFunc(self.display)
-        
         glutKeyboardFunc(self.keyboard)
 
     def set_window_properties(self, size, title):
-        """
-        Set window properties such as size and title.
-
-        Args:
-            size (tuple): The size of the window in (width, height) format.
-            title (str): The title of the window.
-        """
         self.window_size = size
         self.window_title = title
 
     def toggle_fullscreen(self):
-        """ set window to fullscreen """
         self.fullscreen = not self.fullscreen
         if self.fullscreen:
             glutFullScreen()
         else:
             glutReshapeWindow(*self.window_size)
             glutPositionWindow(10, 10)
-    
+
     def set_modelView(self):
-        """
-        set window about transformation or viewport in openGL
-        """
         glLoadIdentity()
-        glViewport(0,0,self.window_size[0],self.window_size[1])
+        glViewport(0, 0, *self.window_size)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-        glOrtho(self.kiri,self.kanan,self.atas,self.bawah,self.z_start,self.z_end)
-        
+        glOrtho(self.kiri, self.kanan, self.atas, self.bawah, self.z_start, self.z_end)
 
     def display(self):
-        """
-        function for eksecution objek in objek_manajer  
-        """
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         self.set_modelView()
         self.object_manager.draw_object()
         glutSwapBuffers()
-
 
     def keyboard(self, key, x, y):
         if key == b'f':
@@ -86,15 +61,10 @@ class OpenGLInitializer:
                 print("Mode Layar Penuh Aktif")
             else:
                 print("Mode Layar Penuh Nonaktif")
-        elif key == b'a':
-            self.transform.translate(-100, 0, "hah")
-        elif key == b'd':
-            self.transform.translate(100, 0, "hah")
-        elif key == b's':
-            self.transform.translate(0, -100, "hah")
-        elif key == b'w':
-            self.transform.translate(0, 100, "hah")
-
         glutPostRedisplay()
 
-
+    def add_animation(self, obj_name, animation_func, duration):
+        obj = self.object_manager.get_objects()
+        obj_to_anim = [o for o in obj if o['name'] == obj_name]
+        for o in obj_to_anim:
+            o['animation'] = Animation(animation_func, duration)

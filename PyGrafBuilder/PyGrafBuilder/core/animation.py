@@ -1,70 +1,67 @@
-import numpy as np
-import time
 from OpenGL.GL import *
-from OpenGL.GLUT import *
+import math
 
 class Transform:
-    def __init__(self, Objects=[]):
-        self.Object = Objects
+    def __init__(self, objects=[]):
+        self.objects = objects
 
     def translate(self, dx: float, dy: float, name="default"):
-        for obj in range(len(self.Object)):
-            new_point = []
-            if self.Object[obj]['name'] in name or self.Object[obj]['type'] == name:
-                for i in range(len(self.Object[obj]['point'])):
-                    new_point.append((self.Object[obj]['point'][i][0] + dx,self.Object[obj]['point'][i][1] + dy))
-                self.Object[obj]['point'] = new_point
+        for obj in self.objects:
+            if obj['name'] == name or obj['type'] == name:
+                for i in range(len(obj['point'])):
+                    x, y = obj['point'][i]
+                    x += dx
+                    y += dy
+                    obj['point'][i] = (x, y)
 
-
-    def scale(self, scale_factor,name="default"):
-        "Hello"
-        for obj in range(len(self.Object)):
-            new_point = []
-            if self.Object[obj]['name'] in name or self.Object[obj]['type'] == name:
-                print(self.Object[obj],['point'])
-                self.Object[obj]['x'] *= scale_factor
-                self.Object[obj]['y'] *= scale_factor
-                for i in range(len(self.Object[obj]['point'])):
-                    new_point.append((self.Object[obj]['point'][i][0] * scale_factor,self.Object[obj]['point'][i][1] * scale_factor))
-                self.Object[obj]['point'] = new_point
-                print(self.Object[obj],['point'])
-
+    def scale(self, scale_factor, name="default"):
+        for obj in self.objects:
+            if obj['name'] == name or obj['type'] == name:
+                for i in range(len(obj['point'])):
+                    x, y = obj['point'][i]
+                    x *= scale_factor
+                    y *= scale_factor
+                    obj['point'][i] = (x, y)
 
     def rotate(self, angle_degrees, center_x=0.0, center_y=0.0, name="default"):
-        """
-        Rotate an object or shape by a specified angle (in degrees) around a specified center point.
+        angle_radians = math.radians(angle_degrees)
+        cos_theta = math.cos(angle_radians)
+        sin_theta = math.sin(angle_radians)
 
-        Args:
-            angle_degrees (float): The rotation angle in degrees.
-            center_x (float, optional): The x-coordinate of the center of rotation. Default is 0.0.
-            center_y (float, optional): The y-coordinate of the center of rotation. Default is 0.0.
-            name (str): The name of the object to be rotated. Default is "default".
-
-        Returns:
-            None
-        """
-        for obj in range(len(self.Object)):
-            new_point = []
-            if self.Object[obj]['name'] == name or self.Object[obj]['type'] == name:
-                angle_radians = np.radians(angle_degrees)
-                for x, y in self.Object[obj]['point']:
-                    # Translasi titik ke pusat rotasi
+        for obj in self.objects:
+            if obj['name'] == name or obj['type'] == name:
+                for i in range(len(obj['point'])):
+                    x, y = obj['point'][i]
                     translated_x = x - center_x
                     translated_y = y - center_y
 
-                    # Perhitungan rotasi
-                    rotated_x = translated_x * np.cos(angle_radians) - translated_y * np.sin(angle_radians)
-                    rotated_y = translated_x * np.sin(angle_radians) + translated_y * np.cos(angle_radians)
+                    rotated_x = translated_x * cos_theta - translated_y * sin_theta
+                    rotated_y = translated_x * sin_theta + translated_y * cos_theta
 
-                    # Kembalikan ke posisi semula
                     final_x = rotated_x + center_x
                     final_y = rotated_y + center_y
 
-                    new_point.append((final_x, final_y))
-
-                self.Object[obj]['point'] = new_point
-    
-                
+                    obj['point'][i] = (final_x, final_y)
 
 
+class Animation:
+    def __init__(self, transform):
+        self.transform = transform
 
+    def move_object_left(self, name, distance=10):
+        self.transform.translate(-distance, 0, name)
+
+    def move_object_right(self, name, distance=10):
+        self.transform.translate(distance, 0, name)
+
+    def move_object_up(self, name, distance=10):
+        self.transform.translate(0, distance, name)
+
+    def move_object_down(self, name, distance=10):
+        self.transform.translate(0, -distance, name)
+
+    def rotate_object_counterclockwise(self, name, angle_degrees=10, center_x=0.0, center_y=0.0):
+        self.transform.rotate(-angle_degrees, center_x, center_y, name)
+        
+    def rotate_object_clockwise(self, name, angle_degrees=10, center_x=0.0, center_y=0.0):
+        self.transform.rotate(angle_degrees, center_x, center_y, name)
