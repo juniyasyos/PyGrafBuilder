@@ -4,12 +4,12 @@ from ProjectManajer import *
 from animation import *
 
 class OpenGLInitializer:
-    def __init__(self, window_size=(1280, 720), window_title="OpenGL Window", kiri=-500.0,kanan=500,atas=500,bawah=-500,z_start=0.0,z_end=1.0):
+    def __init__(self,object_manager,transform, window_size=(1280, 720), window_title="OpenGL Window", kiri=-500.0,kanan=500,atas=500,bawah=-500,z_start=0.0,z_end=1.0):
         self.window_size = window_size
         self.window_title = window_title
         self.fullscreen = False
-        self.object_manager = ObjectManager()
-        self.transform = Transform(self.object_manager.get_objects())
+        self.object_manager = object_manager
+        self.transform = transform
         self.kiri = kiri
         self.kanan = kanan
         self.atas = atas
@@ -17,6 +17,7 @@ class OpenGLInitializer:
         self.z_start = z_start
         self.z_end = z_end
         self.initialize_window()
+        # glutMainLoop()
 
     def set_transformObject(self, obj):
         self.transform = Transform(obj)
@@ -28,6 +29,7 @@ class OpenGLInitializer:
         glutCreateWindow(self.window_title)
         glutDisplayFunc(self.display)
         glutKeyboardFunc(self.keyboard)
+        glutPositionWindow(300, 100)
 
     def set_window_properties(self, size, title):
         self.window_size = size
@@ -62,9 +64,3 @@ class OpenGLInitializer:
             else:
                 print("Mode Layar Penuh Nonaktif")
         glutPostRedisplay()
-
-    def add_animation(self, obj_name, animation_func, duration):
-        obj = self.object_manager.get_objects()
-        obj_to_anim = [o for o in obj if o['name'] == obj_name]
-        for o in obj_to_anim:
-            o['animation'] = Animation(animation_func, duration)

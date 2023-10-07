@@ -7,41 +7,22 @@ class Transform:
 
     def translate(self, dx: float, dy: float, name="default"):
         for obj in self.objects:
-            if obj['name'] == name or obj['type'] == name:
-                for i in range(len(obj['point'])):
-                    x, y = obj['point'][i]
-                    x += dx
-                    y += dy
-                    obj['point'][i] = (x, y)
+            if obj['name'] == name or obj['type'] == name or name in obj["group"]:
+                obj["status"].append(["glTranslate",dx,dy,0])
+
 
     def scale(self, scale_factor, name="default"):
         for obj in self.objects:
-            if obj['name'] == name or obj['type'] == name:
-                for i in range(len(obj['point'])):
-                    x, y = obj['point'][i]
-                    x *= scale_factor
-                    y *= scale_factor
-                    obj['point'][i] = (x, y)
+            if obj['name'] == name or obj['type'] == name or name in obj["group"]:
+                    obj["status"].append(["glScale",scale_factor,scale_factor,0])
 
     def rotate(self, angle_degrees, center_x=0.0, center_y=0.0, name="default"):
-        angle_radians = math.radians(angle_degrees)
-        cos_theta = math.cos(angle_radians)
-        sin_theta = math.sin(angle_radians)
-
         for obj in self.objects:
-            if obj['name'] == name or obj['type'] == name:
-                for i in range(len(obj['point'])):
-                    x, y = obj['point'][i]
-                    translated_x = x - center_x
-                    translated_y = y - center_y
+            if obj['name'] == name or obj['type'] == name or name in obj["group"]:
+                obj["status"].append(["glTranslate", center_x, center_y, 0])
+                obj["status"].append(["glRotate", angle_degrees, 0, 0, 1])
+                obj["status"].append(["glTranslate", -center_x, -center_y, 0])
 
-                    rotated_x = translated_x * cos_theta - translated_y * sin_theta
-                    rotated_y = translated_x * sin_theta + translated_y * cos_theta
-
-                    final_x = rotated_x + center_x
-                    final_y = rotated_y + center_y
-
-                    obj['point'][i] = (final_x, final_y)
 
 
 class Animation:
